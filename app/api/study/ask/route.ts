@@ -12,8 +12,10 @@ export async function POST(request: Request) {
     const corpus = createStudyCorpus(body.sources);
     const context = selectCorpusContext(corpus, "ask", body.question);
     const sourceText = context.units.map((unit) => "[" + unit.sourceName + " · " + unit.reference.unitType + " " + unit.reference.unitNumber + "] " + unit.text).join("\n\n");
+    const history = (body.history ?? []).filter((message) => (message.role === "user" || message.role === "assistant") && message.content.trim()).slice(-8);
+    const conversation = history.length ? "\n\nCONVERSATION SO FAR:\n" + history.map((message) => (message.role === "user" ? "Student" : "StudyBud") + ": " + message.content).join("\n") : "";
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const response = await client.responses.create({ model: process.env.OPENAI_MODEL || "gpt-4o-mini", store: false, instructions: "You are StudyBud's contextual tutor. Answer only from the supplied source units. Be concise but helpful. If the source does not support an answer, say that clearly. Do not invent citations; reference source units only when supplied.", input: "Study space: " + (body.studyTitle || "Untitled") + "\nQuestion: " + body.question + "\n\nSOURCE UNITS:\n" + sourceText });
+    const response = await client.responses.create({ model: process.env.OPENAI_MODEL || "gpt-4o-mini", store: false, instructions: "You are StudyBud's contextual tutor. Answer only from the supplied source units. Be concise but helpful. If the source does not support an answer, say that clearly. Use the conversation only to understand the student's follow-up; do not treat it as source material. Do not invent citations; reference source units only when supplied.", input: "Study space: " + (body.studyTitle || "Untitled") + conversation + "\n\nQuestion: " + body.question + "\n\nSOURCE UNITS:\n" + sourceText });
     return Response.json({ success: true, answer: response.output_text, references: context.units.map((unit) => ({ sourceName: unit.sourceName, reference: unit.reference })).slice(0, 6) });
   } catch (error) {
     const detail = process.env.NODE_ENV !== "production" && error instanceof Error ? error.message : undefined;

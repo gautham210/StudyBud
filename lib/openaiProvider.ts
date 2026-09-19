@@ -24,7 +24,7 @@ const schema = {
 } as const;
 const coverageSchema = {
   type: "object", additionalProperties: false, required: ["topics"], properties: {
-    topics: { type: "array", minItems: 1, maxItems: 20, items: { type: "object", additionalProperties: false, required: ["id", "title", "summary", "sourceUnitIds", "subtopics", "importantTerms", "contentTypes"], properties: { id: { type: "string" }, title: { type: "string" }, summary: { type: "string" }, sourceUnitIds: { type: "array", items: { type: "string" } }, subtopics: { type: "array", items: { type: "string" } }, importantTerms: { type: "array", items: { type: "string" } }, contentTypes: { type: "array", items: { type: "string" } } } } }
+    topics: { type: "array", minItems: 1, maxItems: 20, items: { type: "object", additionalProperties: false, required: ["id", "title", "summary", "sourceUnitIds", "subtopics", "importantTerms", "contentTypes"], properties: { id: { type: "string" }, title: { type: "string" }, summary: { type: "string" }, sourceUnitIds: { type: "array", minItems: 1, items: { type: "string" } }, subtopics: { type: "array", items: { type: "string" } }, importantTerms: { type: "array", items: { type: "string" } }, contentTypes: { type: "array", items: { type: "string" } } } } }
   }
 } as const;
 const imageAnalysisSchema = { type: "object", additionalProperties: false, required: ["summary", "visibleText", "visualElements", "educationalInsights"], properties: { summary: { type: "string" }, visibleText: { type: "string" }, visualElements: { type: "array", items: { type: "string" } }, educationalInsights: { type: "array", items: { type: "string" } } } } as const;
@@ -43,6 +43,13 @@ const learningPlanSchema = {
     } } }
   }
 } as const;
+function learningPlanSchemaFor(expectedTopicIds: string[]) {
+  const schema = JSON.parse(JSON.stringify(learningPlanSchema)) as { properties: { topics: { minItems?: number; maxItems?: number; items: { properties: { topicId: { enum?: string[] } } } } } };
+  schema.properties.topics.minItems = expectedTopicIds.length;
+  schema.properties.topics.maxItems = expectedTopicIds.length;
+  schema.properties.topics.items.properties.topicId.enum = expectedTopicIds;
+  return schema;
+}
 function quizSchema(questionCount: number) {
   return {
     type: "object", additionalProperties: false, required: ["title", "questions"], properties: {
@@ -174,8 +181,8 @@ export class OpenAIProvider implements AIProvider {
     for (const unit of corpus.units) { if (size + unit.text.length > 12000 && batch.length) { batches.push(batch); batch = []; size = 0; } batch.push(unit); size += unit.text.length; } if (batch.length) batches.push(batch);
     const knownIds = new Set(corpus.units.map((unit) => unit.id)); const topics: CoverageTopic[] = [];
     for (let index = 0; index < batches.length; index += 1) {
-      const input = batches[index].map((unit) => "UNIT_ID=" + unit.id + "\nSOURCE=" + unit.sourceName + "\nREFERENCE=" + unit.reference.unitType + " " + unit.reference.unitNumber + "\nTEXT=" + unit.text).join("\n\n");
-      const response = await client.responses.create({ model, store: false, instructions: "Analyze only these educational source units. Build a coverage map of every meaningful topic in this batch. Use only UNIT_ID values provided; never invent IDs. Group related units when justified. This is analysis, not a lesson. Do not return HTML or CSS.", input, text: { format: { type: "json_schema", name: "coverage_analysis", strict: true, schema: coverageSchema } } });
+      const input = "Allowed UNIT_ID values (copy them exactly): " + batches[index].map((unit) => unit.id).join(", ") + "\n\n" + batches[index].map((unit) => "UNIT_ID=" + unit.id + "\nSOURCE=" + unit.sourceName + "\nREFERENCE=" + unit.reference.unitType + " " + unit.reference.unitNumber + "\nTEXT=" + unit.text).join("\n\n");
+      const response = await client.responses.create({ model, store: false, instructions: "Analyze only these educational source units. Build a coverage map of every meaningful topic in this batch. Every returned topic MUST include at least one exact UNIT_ID from the allowed list in sourceUnitIds; never invent IDs or return an empty topic list when the batch contains study material. Group related units when justified. This is analysis, not a lesson. Do not return HTML or CSS.", input, text: { format: { type: "json_schema", name: "coverage_analysis", strict: true, schema: coverageSchema } } });
       const parsed = JSON.parse(response.output_text) as { topics?: CoverageTopic[] };
       for (const topic of parsed.topics ?? []) { const sourceUnitIds = topic.sourceUnitIds.filter((id) => knownIds.has(id)); if (sourceUnitIds.length) topics.push({ ...topic, id: "batch" + index + "-" + topic.id, sourceUnitIds }); }
     }
@@ -193,7 +200,7 @@ export class OpenAIProvider implements AIProvider {
     for (let index = 0; index < batches.length; index += 1) {
       const coverageTopics = batches[index];
       const expectedTopicIds = new Set(coverageTopics.map((topic) => topic.id));
-      const input = "Coverage topics to plan (return exactly one plan topic for every supplied coverage topic, preserving its id as topicId):\n"
+      const input = "Required topicId values (use each exactly once): " + Array.from(expectedTopicIds).join(", ") + "\n\nCoverage topics to plan (return exactly one plan topic for every supplied coverage topic, preserving its id as topicId):\n"
         + JSON.stringify(coverageTopics)
         + "\n\nRelevant source-unit context:\n"
         + planSourceContext(coverageTopics, corpus);
@@ -204,7 +211,7 @@ export class OpenAIProvider implements AIProvider {
           store: false,
           instructions: "You are StudyBud's source-grounded learning planner. Turn the supplied coverage topics into a rich teaching blueprint, not a generic curriculum. Use only the supplied terminology, organization, relationships, processes, formulas, classifications, and examples. For every coverage topic, return one detailed plan topic with the exact topicId supplied. Every sourceUnitIds value must be a UNIT_ID provided for that coverage topic; do not invent or borrow locations. Specify concrete learning objectives, concepts with accurate descriptions, appropriate semantic study blocks, source-supported examples, useful visual opportunities, and revision or exam focus. Do not generate a lesson, HTML, or CSS.",
           input,
-          text: { format: { type: "json_schema", name: "learning_plan", strict: true, schema: learningPlanSchema } }
+          text: { format: { type: "json_schema", name: "learning_plan", strict: true, schema: learningPlanSchemaFor(Array.from(expectedTopicIds)) } }
         });
       } catch (error) {
         const apiError = error as { name?: unknown; message?: unknown; status?: unknown; code?: unknown };
