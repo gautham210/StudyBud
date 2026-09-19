@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 function validRequest(value: unknown): value is StudyRequest {
   if (!value || typeof value !== "object") return false;
   const request = value as Partial<StudyRequest>;
-  return Boolean(request.source?.type === "document" && request.source.content?.text?.trim() && request.mode && request.strategy && request.learnerContext);
+  return Boolean((request.source?.type === "document" || request.source?.type === "image") && request.source.content?.text?.trim() && request.mode && request.strategy && request.learnerContext);
 }
 
 export async function POST(request: Request) {

@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import type { AIProvider, ConfiguredQuiz, ConfiguredQuizQuestion, CoverageAnalysis, CoverageTopic, LearningBlockType, LearningPlan, LearningPlanTopic, QuizConfig, QuizQuestionType, QuizRequest, StudyRequest, StudySpace } from "@/lib/ai";
 import { createStudyCorpus, selectCorpusContext } from "@/lib/corpus";
+import type { ImageAnalysis, ImageUpload } from "@/lib/images";
 
 const MAX_SOURCE_CHARS = 18000;
 const MAX_PLAN_CONTEXT_CHARS = 14000;
@@ -26,6 +27,7 @@ const coverageSchema = {
     topics: { type: "array", minItems: 1, maxItems: 20, items: { type: "object", additionalProperties: false, required: ["id", "title", "summary", "sourceUnitIds", "subtopics", "importantTerms", "contentTypes"], properties: { id: { type: "string" }, title: { type: "string" }, summary: { type: "string" }, sourceUnitIds: { type: "array", items: { type: "string" } }, subtopics: { type: "array", items: { type: "string" } }, importantTerms: { type: "array", items: { type: "string" } }, contentTypes: { type: "array", items: { type: "string" } } } } }
   }
 } as const;
+const imageAnalysisSchema = { type: "object", additionalProperties: false, required: ["summary", "visibleText", "visualElements", "educationalInsights"], properties: { summary: { type: "string" }, visibleText: { type: "string" }, visualElements: { type: "array", items: { type: "string" } }, educationalInsights: { type: "array", items: { type: "string" } } } } as const;
 const learningPlanSchema = {
   type: "object", additionalProperties: false, required: ["topics"], properties: {
     topics: { type: "array", minItems: 1, items: { type: "object", additionalProperties: false, required: ["topicId", "title", "sourceUnitIds", "learningObjectives", "concepts", "recommendedBlocks", "examplesToTeach", "visualOpportunities", "examFocus"], properties: {
@@ -233,7 +235,27 @@ export class OpenAIProvider implements AIProvider {
     if (!plannedTopics.length) throw new Error("Learning plan found no usable topics.");
     return { topics: plannedTopics };
   }
-  async generateStudySpace(request: StudyRequest): Promise<StudySpace> {
+  async analyzeImage(upload: ImageUpload): Promise<ImageAnalysis> {
+    const key = process.env.OPENAI_API_KEY;
+    const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
+    const client = new OpenAI({ apiKey: key });
+    debug("image analysis started", { provider: "openai", model, fileName: upload.fileName, mimeType: upload.mimeType, sizeBytes: upload.sizeBytes });
+    const response = await client.responses.create({
+      model,
+      store: false,
+      instructions: "You are StudyBud's image learning analyst. Analyze the actual uploaded image as educational material. Extract only visible information: text, labels, diagrams, tables, charts, relationships, captions, symbols, and key visual facts. Do not infer missing content from the filename. Return concise source-grounded structured analysis; do not return HTML or CSS.",
+      input: [{ role: "user", content: [{ type: "input_text", text: "Analyze this image for a study workspace. Preserve meaningful visual relationships and visible educational information." }, { type: "input_image", image_url: upload.dataUrl, detail: "high" }] }],
+      text: { format: { type: "json_schema", name: "image_analysis", strict: true, schema: imageAnalysisSchema } }
+    });
+    let parsed: unknown;
+    try { parsed = JSON.parse(response.output_text); } catch { throw new Error("OpenAI returned invalid image-analysis structured output."); }
+    const image = parsed as Partial<ImageAnalysis>;
+    if (!image || typeof image.summary !== "string" || typeof image.visibleText !== "string" || !Array.isArray(image.visualElements) || !image.visualElements.every((item) => typeof item === "string") || !Array.isArray(image.educationalInsights) || !image.educationalInsights.every((item) => typeof item === "string")) throw new Error("OpenAI returned an invalid image-analysis structure.");
+    if (!image.summary.trim() && !image.visibleText.trim() && !image.visualElements.length && !image.educationalInsights.length) throw new Error("We couldn't find usable educational information in that image.");
+    debug("image analysis validated", { fileName: upload.fileName, visualElements: image.visualElements.length, insights: image.educationalInsights.length });
+    return image as ImageAnalysis;
+  }  async generateStudySpace(request: StudyRequest): Promise<StudySpace> {
     const key = process.env.OPENAI_API_KEY; const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
     debug("request started", { provider: "openai", model, keyConfigured: Boolean(key), sourceCharacters: request.source.content.text.length, sourceCount: request.sources?.length ?? 1 });
     if (!key) throw new Error("OPENAI_API_KEY is not configured.");

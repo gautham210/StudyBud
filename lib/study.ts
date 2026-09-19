@@ -14,6 +14,7 @@ export type StudySource = {
 };
 
 export const MAX_SOURCE_FILE_SIZE = 25 * 1024 * 1024;
+export const MAX_IMAGE_SOURCE_FILE_SIZE = 10 * 1024 * 1024;
 const documentExtensions: Record<string, string> = { pdf: "PDF", doc: "Word", docx: "Word", ppt: "PowerPoint", pptx: "PowerPoint", xls: "Excel", xlsx: "Excel", csv: "CSV", txt: "Text", md: "Markdown" };
 const imageExtensions = ["jpg", "jpeg", "png", "webp"];
 
@@ -22,7 +23,7 @@ function extensionFor(file: File) { return file.name.split(".").pop()?.toLowerCa
 export function getSourceFileKind(file: File) {
   const extension = extensionFor(file);
   if (documentExtensions[extension]) return { sourceType: "document" as const, label: documentExtensions[extension] };
-  if (imageExtensions.includes(extension) || file.type.startsWith("image/")) return { sourceType: "image" as const, label: "Image" };
+  if (imageExtensions.includes(extension) && (file.type === "" || file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/webp")) return { sourceType: "image" as const, label: "Image" };
   return null;
 }
 
@@ -42,7 +43,7 @@ export function isYouTubeUrl(value: string) {
 
 export function isStudySourceReady(source: StudySource) {
   if (source.type === "document") return source.processingStatus === "ready" && Boolean(source.processedDocument);
-  if (source.type === "image") return Boolean(source.file);
+  if (source.type === "image") return source.processingStatus === "ready" && Boolean(source.processedDocument);
   if (source.type === "youtube") return Boolean(source.youtubeUrl && isYouTubeUrl(source.youtubeUrl));
   return Boolean(source.text?.trim());
 }

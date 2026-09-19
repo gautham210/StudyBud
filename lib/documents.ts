@@ -9,7 +9,7 @@ export const DOCUMENT_MAX_BYTES = 25 * 1024 * 1024;
 export type DocumentErrorCode = "INVALID_FILE" | "FILE_TOO_LARGE" | "UNSUPPORTED_FILE_TYPE" | "EXTRACTION_FAILED" | "EMPTY_DOCUMENT" | "SERVER_ERROR";
 export type DocumentError = { code: DocumentErrorCode; message: string };
 export type ContentUnit = { number: number; text: string; title?: string };
-export type NormalizedStudySource = { id: string; type: "document"; fileName: string; mimeType: string; extension: string; sizeBytes: number; title?: string; content: { text: string; pages?: ContentUnit[]; sections?: ContentUnit[]; slides?: ContentUnit[]; sheets?: ContentUnit[] }; metadata: { pageCount?: number; slideCount?: number; sheetCount?: number; wordCount: number; characterCount: number }; createdAt: string };
+export type NormalizedStudySource = { id: string; type: "document" | "image"; fileName: string; mimeType: string; extension: string; sizeBytes: number; title?: string; content: { text: string; pages?: ContentUnit[]; sections?: ContentUnit[]; slides?: ContentUnit[]; sheets?: ContentUnit[] }; metadata: { pageCount?: number; slideCount?: number; sheetCount?: number; wordCount: number; characterCount: number; imageAnalysis?: { summary: string; visibleText: string; visualElements: string[]; educationalInsights: string[] } }; createdAt: string };
 
 const kinds: Record<string, string> = { pdf: "PDF", docx: "Word", pptx: "PowerPoint", xlsx: "Excel", txt: "Text", md: "Markdown" };
 export function extensionOf(name: string) { return name.split(".").pop()?.toLowerCase() ?? ""; }
