@@ -1,0 +1,16 @@
+"use client";
+import Image from "next/image";
+import { useState } from "react";
+import { Flame } from "lucide-react";
+import { LearnerProfile } from "@/lib/study";
+import { DemoStreak } from "@/lib/demoStorage";
+import { ProfilePopover } from "@/components/ProfilePopover";
+import { StreakPopover } from "@/components/StreakPopover";
+
+export type AppView = "learn" | "how-it-works" | "community";
+const views: Array<[AppView, string]> = [["learn", "Learn"], ["how-it-works", "How it works"], ["community", "Community"]];
+export function Header({ view, onNavigate, profile, streak, onEditProfile }: { view: AppView; onNavigate: (view: AppView) => void; profile: LearnerProfile; streak: DemoStreak; onEditProfile: () => void }) {
+  const navClass = (target: AppView) => `rounded-full px-3 py-1.5 font-display text-xs transition-all ${view === target ? "bg-ink font-semibold text-white shadow-tactile-sm" : "text-muted hover:text-ink"}`;
+  const [profileOpen, setProfileOpen] = useState(false); const [streakOpen, setStreakOpen] = useState(false);
+  return <header className="fixed inset-x-0 top-0 z-50 border-b border-ink bg-canvas/85 backdrop-blur-xl"><div className="mx-auto flex h-16 max-w-[1180px] items-center justify-between px-4 md:px-10"><button type="button" onClick={() => onNavigate("learn")} className="flex items-center gap-2"><Image src="/studybud-sprout.svg" alt="StudyBud sprout" width={34} height={34} priority /><span className="font-display text-lg font-bold tracking-tight">StudyBud</span></button><nav className="hidden items-center gap-1 rounded-full border border-ink/20 bg-[#f3f3f3] p-1 md:flex" aria-label="Primary navigation">{views.map(([target, label]) => <button type="button" key={target} onClick={() => onNavigate(target)} className={navClass(target)}>{label}</button>)}</nav><div className="relative flex items-center gap-2"><button type="button" onClick={() => { setStreakOpen(!streakOpen); setProfileOpen(false); }} aria-expanded={streakOpen} className="inline-flex items-center gap-1 rounded-full border border-ink bg-yellow px-2.5 py-1.5 text-xs font-semibold shadow-tactile-sm sm:px-3"><Flame size={14} fill="currentColor" /><span className="hidden sm:inline">{streak.days}d streak</span></button><button type="button" aria-label="Open demo profile" onClick={() => { setProfileOpen(!profileOpen); setStreakOpen(false); }} aria-expanded={profileOpen} className="grid h-8 w-8 place-items-center rounded-full border border-ink bg-lilac font-display text-xs font-bold focus:outline-none focus:ring-2 focus:ring-ink">S</button><StreakPopover open={streakOpen} streak={streak} onClose={() => setStreakOpen(false)} /><ProfilePopover open={profileOpen} profile={profile} onClose={() => setProfileOpen(false)} onEdit={() => { setProfileOpen(false); onEditProfile(); }} /></div></div><nav className="flex border-t border-ink/10 bg-white/80 px-4 py-1 md:hidden" aria-label="Mobile primary navigation">{views.map(([target, label]) => <button type="button" key={target} onClick={() => onNavigate(target)} className={`flex-1 rounded-full py-1.5 font-display text-[11px] transition-all ${view === target ? "bg-ink font-semibold text-white" : "text-muted"}`}>{label}</button>)}</nav></header>;
+}

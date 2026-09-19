@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary-fixed-variant": "#474646", "tertiary": "#000000", "background": "#f9f9f9", "on-secondary-container": "#6d5f00", "primary": "#000000", "surface": "#f9f9f9", "secondary-container": "#f9da00", "on-secondary-fixed": "#211b00", "surface-container-high": "#e8e8e8", "on-tertiary-container": "#ec4a27", "surface-dim": "#dadada", "on-primary": "#ffffff", "tertiary-container": "#3d0600", "on-tertiary-fixed": "#3d0600", "surface-container": "#eeeeee", "on-error": "#ffffff", "primary-fixed-dim": "#c8c6c5", "surface-container-low": "#f3f3f3", "secondary-fixed": "#ffe243", "surface-bright": "#f9f9f9", "on-primary-container": "#858383", "on-tertiary-fixed-variant": "#8c1800", "primary-fixed": "#e5e2e1", "secondary-fixed-dim": "#e3c600", "on-background": "#1a1c1c", "error-container": "#ffdad6", "surface-variant": "#e2e2e2", "surface-container-lowest": "#ffffff", "primary-container": "#1c1b1b", "on-surface": "#1a1c1c", "surface-container-highest": "#e2e2e2", "inverse-on-surface": "#f0f1f1", "on-secondary": "#ffffff", "inverse-surface": "#2f3131", "tertiary-fixed": "#ffdad3", "on-surface-variant": "#444748", "tertiary-fixed-dim": "#ffb4a4", "inverse-primary": "#c8c6c5", "outline-variant": "#c4c7c7", "surface-tint": "#5f5e5e", "error": "#ba1a1a", "on-primary-fixed": "#1c1b1b", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#524700", "secondary": "#6d5e00", "outline": "#747878", "on-error-container": "#93000a" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin-md": "1.5rem", "space-xl": "2rem", "gutter-lg": "1.5rem", "space-lg": "1.5rem", "margin": "1rem", "space-2xl": "3rem", "space-2xs": "0.125rem", "space-md": "1rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-lg": "2.5rem", "gutter": "1rem" }, fontFamily: { "headline-lg": ["Space Grotesk"], "headline-xl-mobile": ["Space Grotesk"], "headline-xxl": ["Space Grotesk"], "label-md": ["Space Grotesk"], "headline-xxl-mobile": ["Space Grotesk"], "headline-xl": ["Space Grotesk"], "headline-md": ["Space Grotesk"], "body-lg": ["Plus Jakarta Sans"], "label-sm": ["Space Grotesk"], "body-sm": ["Plus Jakarta Sans"], "headline-sm": ["Space Grotesk"], "body-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-xl-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xxl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-xxl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-container selection:text-on-secondary-fixed"><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-primary"><div class="h-16 max-w-[1180px] mx-auto px-margin md:px-margin-lg flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-sm shrink-0"><img alt="StudyBud Sprout Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Wp063hPCY75gFaJbFabmV_EJMkjGD-mpRVCuWDqsms5h6_quG2G45O68IJ4eTfCWThkjezUDbId6bz1wdrNQWezZCl6XbNmjXgAiO_BAnIrDZwXxo3K4A-vjWXJWvGgw4TUG42hO6X3fXvvA7c9v24T_OUhm7yph3HK3JeLSRqPt_LIksSbJwmfxYmWupZEf13S5SG69jG6JknhbUaTJ4tBAmXKmxgX0AuxFbfsgOfzKGy_7C3xDem54M"/><a class="font-headline-md text-headline-md text-primary tracking-tight" data-path="learn" href="#">StudyBud</a></div><nav class="hidden md:flex items-center gap-space-sm bg-surface-container-low px-space-xs py-space-xs rounded-full border border-primary/20" data-active-classes="bg-primary text-on-primary font-headline-sm text-headline-sm rounded-full px-space-md py-space-xs shadow-[1px_1px_0px_#000000]"><a class="font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface px-space-md py-space-xs rounded-full transition-colors" data-path="learn" href="#">Learn</a><a aria-current="page" class="transition-colors bg-primary text-on-primary font-headline-sm text-headline-sm rounded-full px-space-md py-space-xs shadow-[1px_1px_0px_#000000]" data-path="how-it-works" href="#">How it works</a><a class="font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface px-space-md py-space-xs rounded-full transition-colors" data-path="community" href="#">Community</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-space-xs px-space-md py-space-xs bg-secondary-container border border-primary rounded-full shadow-[1px_1px_0px_#000000]"><span class="text-body-sm font-label-md text-label-md text-on-secondary-fixed">🔥 5d streak</span></div><button aria-label="Student Profile" class="p-space-2xs rounded-full border border-primary transition-transform hover:-translate-y-0.5" type="button"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VMsJwrSxfF_zsk75ppz0JXroxh_0dnB43jxxCJmWhRCa-1HLeOumLVYrexLxoLhQZyAC0S5_b8iuhQ6NvX-NchtiK_bkXd9ZN7gZfpTs_DtSpKQ9mx-hbvAPmalLgMrJWspXKeH0wGFgn4fIRg0XZSSiUJFTjj_vpasEhM6n6pfCUyO9itVlxl0u_5trILq6N7Lcm_PQRjf0qbRsuU5TYxbrvugo1oH9pYTANJm84qiIFrgtn8r1BSzz8"/></button></div></div></header><main class="w-full pt-16 flex-1 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Utility Context Bar -->
+<section class="w-full bg-surface-container-lowest border-b border-primary py-space-sm px-margin md:px-margin-lg">
+<div class="max-w-[1240px] mx-auto flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<!-- Breadcrumbs & Document Info -->
+<div class="flex flex-wrap items-center gap-space-sm text-body-sm font-body-sm">
+<a class="inline-flex items-center gap-space-xs font-headline-sm text-headline-sm text-primary hover:opacity-75 transition-opacity" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Back to Workspace</span>
+</a>
+<span class="text-outline">/</span>
+<div class="inline-flex items-center gap-space-xs bg-surface-container px-space-sm py-space-2xs rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-[16px] text-primary">description</span>
+<span class="font-headline-sm text-headline-sm text-primary">CS161_Lecture4_Dynamic_Programming.pdf</span>
+</div>
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs bg-secondary-container rounded-full text-on-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+          Mode: Explain (Exam-Ready)
+        </span>
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs bg-surface-variant text-on-surface-variant rounded-full font-label-sm text-label-sm">
+          🎯 Midterm Revision Sprint
+        </span>
+<span class="text-on-surface-variant text-body-sm">• 5 min read</span>
+</div>
+<!-- Action Buttons Cluster -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="inline-flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-lowest text-primary border border-primary rounded-full hover:bg-surface-container transition-colors shadow-[1px_1px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px]" id="copyMdBtn" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span class="font-label-md text-label-md">Copy MD</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-lowest text-primary border border-primary rounded-full hover:bg-surface-container transition-colors shadow-[1px_1px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px]" type="button">
+<span class="material-symbols-outlined text-[16px]">share</span>
+<span class="font-label-md text-label-md">Share Session</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-lowest text-primary border border-primary rounded-full hover:bg-surface-container transition-colors shadow-[1px_1px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px]" type="button">
+<span class="material-symbols-outlined text-[16px]">cached</span>
+<span class="font-label-md text-label-md">Regenerate</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-md py-space-xs bg-primary text-on-primary border border-primary rounded-full hover:bg-primary/90 transition-transform shadow-[2px_2px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px]" type="button">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+<span class="font-label-md text-label-md">Save to Study Deck</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Main Canvas (Editorial Content + Interactive Quiz) -->
+<section class="max-w-[1240px] w-full mx-auto px-margin md:px-margin-lg py-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- Left Column: Rich Output Content (8 cols) -->
+<article class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Title & Badges Header -->
+<header class="flex flex-col gap-space-sm pb-space-sm border-b border-primary/20">
+<div class="flex items-center gap-space-xs">
+<span class="bg-primary text-on-primary font-label-sm text-label-sm uppercase px-space-sm py-space-2xs rounded-full">CORE CONCEPT #04</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm px-space-sm py-space-2xs rounded-full border border-primary">HIGH PROBABILITY MIDTERM</span>
+</div>
+<h1 class="font-headline-xxl text-headline-xxl text-primary tracking-tight">
+            Dynamic Programming: Memoization vs Tabulation Deep-Dive
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+            Break through recursion bottlenecks by transforming brute-force searches into optimal cached state representations. Master the two core patterns tested in algorithms exams.
+          </p>
+</header>
+<!-- High-Yield Core Concept Box -->
+<div class="bg-secondary-container/20 border border-primary p-space-lg rounded-xl shadow-[3px_3px_0px_#000000] relative overflow-hidden">
+<div class="flex items-start gap-space-md">
+<span class="p-space-xs bg-secondary-container text-on-secondary-fixed rounded-lg border border-primary shrink-0 shadow-[1px_1px_0px_#000000]">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</span>
+<div class="flex flex-col gap-space-2xs">
+<span class="font-headline-sm text-headline-sm text-primary uppercase tracking-wide">High-Yield Core Takeaway</span>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+<span class="font-bold">Overlapping subproblems</span> allow caching previously evaluated states. By saving computed results in memory, we flatten otherwise intractable exponential <code class="bg-surface-container-highest px-1 py-0.5 rounded font-mono text-sm border border-primary/20">O(2ⁿ)</code> recursion trees directly into streamlined <code class="bg-surface-container-highest px-1 py-0.5 rounded font-mono text-sm border border-primary/20">O(n)</code> linear execution runs.
+              </p>
+</div>
+</div>
+</div>
+<!-- Visual Schema: Tree vs Linear Chain -->
+<div class="bg-surface-container-lowest border border-primary rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Complexity Reduction Architecture</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">FIBONACCI(5) TRACE</span>
+</div>
+<!-- Miniature clean SVG diagram -->
+<div class="w-full bg-surface-container-low rounded-lg p-space-md border border-primary/20 flex flex-col md:flex-row items-center justify-around gap-space-md text-center">
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm text-error mb-space-2xs">Brute Force O(2ⁿ)</span>
+<svg class="w-48 h-20 text-primary" fill="none" viewbox="0 0 180 75" xmlns="http://www.w3.org/2000/svg">
+<circle cx="90" cy="12" fill="#FFFFFF" r="8" stroke="#000000" stroke-width="1.5"></circle>
+<text font-family="Space Grotesk" font-size="9" font-weight="700" text-anchor="middle" x="90" y="16">F(5)</text>
+<line stroke="#000000" stroke-width="1.5" x1="84" x2="52" y1="18" y2="34"></line>
+<line stroke="#000000" stroke-width="1.5" x1="96" x2="128" y1="18" y2="34"></line>
+<circle cx="48" cy="40" fill="#FFFFFF" r="8" stroke="#000000" stroke-width="1.5"></circle>
+<text font-family="Space Grotesk" font-size="9" font-weight="700" text-anchor="middle" x="48" y="44">F(4)</text>
+<circle cx="132" cy="40" fill="#ffdad6" r="8" stroke="#ba1a1a" stroke-width="1.5"></circle>
+<text font-family="Space Grotesk" font-size="9" font-weight="700" text-anchor="middle" x="132" y="44">F(3)*</text>
+<line stroke="#000000" stroke-dasharray="2 2" stroke-width="1.2" x1="42" x2="24" y1="46" y2="60"></line>
+<line stroke="#ba1a1a" stroke-width="1.2" x1="54" x2="72" y1="46" y2="60"></line>
+<circle cx="74" cy="65" fill="#ffdad6" r="7" stroke="#ba1a1a" stroke-width="1.5"></circle>
+<text font-family="Space Grotesk" font-size="8" font-weight="700" text-anchor="middle" x="74" y="69">F(3)*</text>
+</svg>
+<span class="font-label-sm text-label-sm text-error mt-1">*Duplicate branch wasted</span>
+</div>
+<div class="flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px] text-primary">arrow_forward</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm text-on-secondary-container mb-space-2xs">Memoized / DP O(N)</span>
+<div class="flex items-center gap-1 bg-surface-container-lowest p-2 rounded border border-primary shadow-[1px_1px_0px_#000000]">
+<div class="px-2 py-1 bg-secondary-container/40 rounded border border-primary font-mono text-xs font-bold">[0]</div>
+<div class="px-2 py-1 bg-secondary-container/40 rounded border border-primary font-mono text-xs font-bold">[1]</div>
+<div class="px-2 py-1 bg-secondary-container/40 rounded border border-primary font-mono text-xs font-bold">[1]</div>
+<div class="px-2 py-1 bg-secondary-container/40 rounded border border-primary font-mono text-xs font-bold">[2]</div>
+<div class="px-2 py-1 bg-secondary-container/40 rounded border border-primary font-mono text-xs font-bold">[3]</div>
+<div class="px-2 py-1 bg-secondary-fixed rounded border border-primary font-mono text-xs font-bold text-primary">[5]</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-2">Single lookup array (Hash or List)</span>
+</div>
+</div>
+</div>
+<!-- Structured Comparison Table -->
+<div class="flex flex-col gap-space-xs">
+<h2 class="font-headline-lg text-headline-lg text-primary">Architectural Matrix</h2>
+<div class="overflow-x-auto border border-primary rounded-xl bg-surface-container-lowest shadow-[2px_2px_0px_#000000]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high border-b border-primary">
+<th class="p-space-sm font-headline-sm text-headline-sm text-primary w-1/4">Metric</th>
+<th class="p-space-sm font-headline-sm text-headline-sm text-primary border-l border-primary w-3/8 bg-secondary-container/10">Memoization (Top-down)</th>
+<th class="p-space-sm font-headline-sm text-headline-sm text-primary border-l border-primary w-3/8">Tabulation (Bottom-up)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/20 font-body-md text-body-md">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-space-sm font-headline-sm text-headline-sm text-primary bg-surface-container-lowest">Approach</td>
+<td class="p-space-sm border-l border-primary text-on-surface">Recursive breakdown + on-demand Hash map caching</td>
+<td class="p-space-sm border-l border-primary text-on-surface">Iterative loop + preallocated DP array allocation</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-space-sm font-headline-sm text-headline-sm text-primary bg-surface-container-lowest">Call Stack</td>
+<td class="p-space-sm border-l border-primary text-on-surface">
+<span class="inline-block px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-mono text-xs font-bold mr-1">O(N)</span>
+                    Risk of RecursionError on large inputs
+                  </td>
+<td class="p-space-sm border-l border-primary text-on-surface">
+<span class="inline-block px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-mono text-xs font-bold mr-1">O(1)</span>
+                    Zero auxiliary stack frame overhead
+                  </td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-space-sm font-headline-sm text-headline-sm text-primary bg-surface-container-lowest">State Evaluation</td>
+<td class="p-space-sm border-l border-primary text-on-surface">Lazy evaluation: computes <em>only</em> reachable states</td>
+<td class="p-space-sm border-l border-primary text-on-surface">Eager evaluation: computes sequential index ranges</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-space-sm font-headline-sm text-headline-sm text-primary bg-surface-container-lowest">Memory Profiling</td>
+<td class="p-space-sm border-l border-primary text-on-surface">Hash dictionary overhead + recursive stack frame size</td>
+<td class="p-space-sm border-l border-primary text-on-surface">Can often optimize to <code class="font-mono text-xs bg-surface-container px-1 py-0.5 rounded">O(1) space</code> via rolling variables</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Side-by-Side Python Code Blocks -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg text-primary">Side-by-Side Python Implementation</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">PEP 8 Compliant</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Memoization Snippet -->
+<div class="border border-primary rounded-xl overflow-hidden bg-surface-container-lowest shadow-[2px_2px_0px_#000000] flex flex-col">
+<div class="bg-surface-container px-space-md py-space-xs border-b border-primary flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-headline-sm text-headline-sm text-primary">Top-Down (Memoization)</span>
+</div>
+<span class="font-mono text-[11px] text-on-surface-variant">memoize.py</span>
+</div>
+<div class="p-space-md bg-surface-container-lowest font-mono text-xs overflow-x-auto leading-5 text-on-surface flex-1">
+<pre><code><span class="text-secondary font-bold">def</span> <span class="text-primary font-bold">fib_memo</span>(n: int, memo: dict = {}) -&gt; int:
+    <span class="text-on-surface-variant"># 1. Base cases</span>
+    <span class="text-secondary font-bold">if</span> n &lt;= 0: <span class="text-secondary font-bold">return</span> 0
+    <span class="text-secondary font-bold">if</span> n == 1: <span class="text-secondary font-bold">return</span> 1
+    
+    <span class="text-on-surface-variant"># 2. Check cache</span>
+    <span class="text-secondary font-bold">if</span> n <span class="text-secondary font-bold">in</span> memo:
+        <span class="text-secondary font-bold">return</span> memo[n]
+        
+    <span class="text-on-surface-variant"># 3. Store and return</span>
+    memo[n] = fib_memo(n - 1, memo) + \
+              fib_memo(n - 2, memo)
+    <span class="text-secondary font-bold">return</span> memo[n]</code></pre>
+</div>
+</div>
+<!-- Tabulation Snippet -->
+<div class="border border-primary rounded-xl overflow-hidden bg-surface-container-lowest shadow-[2px_2px_0px_#000000] flex flex-col">
+<div class="bg-surface-container px-space-md py-space-xs border-b border-primary flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim"></span>
+<span class="font-headline-sm text-headline-sm text-primary">Bottom-Up (Tabulation)</span>
+</div>
+<span class="font-mono text-[11px] text-on-surface-variant">tabulate.py</span>
+</div>
+<div class="p-space-md bg-surface-container-lowest font-mono text-xs overflow-x-auto leading-5 text-on-surface flex-1">
+<pre><code><span class="text-secondary font-bold">def</span> <span class="text-primary font-bold">fib_tab</span>(n: int) -&gt; int:
+    <span class="text-on-surface-variant"># 1. Edge checks</span>
+    <span class="text-secondary font-bold">if</span> n &lt;= 0: <span class="text-secondary font-bold">return</span> 0
+    <span class="text-secondary font-bold">if</span> n == 1: <span class="text-secondary font-bold">return</span> 1
+    
+    <span class="text-on-surface-variant"># 2. Preallocate DP table</span>
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    
+    <span class="text-on-surface-variant"># 3. Iterative accumulation</span>
+    <span class="text-secondary font-bold">for</span> i <span class="text-secondary font-bold">in</span> range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+        
+    <span class="text-secondary font-bold">return</span> dp[n]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Right Column: Interactive Quiz & Study Companion (4 cols) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg lg:sticky lg:top-20">
+<!-- Live Quiz Container -->
+<div class="bg-surface-container-lowest border border-primary rounded-xl p-space-lg shadow-[4px_4px_0px_#000000] flex flex-col gap-space-md">
+<!-- Quiz Header & Step Counter -->
+<div class="flex items-center justify-between pb-space-xs border-b border-primary/20">
+<div class="flex items-center gap-space-2xs">
+<span class="p-space-2xs bg-secondary-container rounded border border-primary text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</span>
+<h3 class="font-headline-md text-headline-md text-primary">Concept Verification</h3>
+</div>
+<span class="font-label-md text-label-md px-space-xs py-space-2xs bg-surface-container rounded-full border border-primary/30">
+              1 of 3
+            </span>
+</div>
+<!-- Question Content -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Targeted Assessment</span>
+<p class="font-headline-sm text-headline-sm text-primary leading-snug">
+              What causes standard un-memoized recursive Fibonacci to suffer from <span class="underline decoration-secondary-fixed-dim decoration-2">O(2ⁿ) exponential blowup</span>?
+            </p>
+</div>
+<!-- Multiple Choice Options -->
+<div class="flex flex-col gap-space-xs">
+<!-- Option A (Default Outline) -->
+<button class="w-full text-left p-space-sm border border-primary rounded-lg bg-surface-container-lowest hover:bg-surface-container-low transition-colors flex items-start gap-space-sm group" type="button">
+<span class="w-6 h-6 rounded-full border border-primary flex items-center justify-center text-xs font-mono font-bold shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">A</span>
+<span class="font-body-sm text-body-sm text-on-surface">Excessive heap memory allocation during stack frame creation</span>
+</button>
+<!-- Option B (CORRECT STATE) -->
+<div class="w-full text-left p-space-sm border-2 border-emerald-600 bg-emerald-50 text-emerald-950 rounded-lg flex items-start gap-space-sm shadow-[1px_1px_0px_#059669]">
+<span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-emerald-950 font-bold">
+                  Redundant recomputation of identical overlapping subproblems
+                </span>
+<span class="font-label-sm text-label-sm text-emerald-800 uppercase tracking-wider mt-0.5">Correct Selection</span>
+</div>
+</div>
+<!-- Option C (Default Outline) -->
+<button class="w-full text-left p-space-sm border border-primary rounded-lg bg-surface-container-lowest hover:bg-surface-container-low transition-colors flex items-start gap-space-sm group" type="button">
+<span class="w-6 h-6 rounded-full border border-primary flex items-center justify-center text-xs font-mono font-bold shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">C</span>
+<span class="font-body-sm text-body-sm text-on-surface">Failure to enforce iterative termination conditions</span>
+</button>
+<!-- Option D (WRONG STATE) -->
+<div class="w-full text-left p-space-sm border border-rose-400 bg-rose-50 text-rose-900 rounded-lg flex items-start gap-space-sm">
+<span class="w-6 h-6 rounded-full bg-rose-200 border border-rose-500 text-rose-900 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-rose-950 line-through opacity-80">
+                  Frequent L1 cache misses in hardware memory hierarchies
+                </span>
+<span class="font-label-sm text-label-sm text-rose-700">Incorrect reasoning</span>
+</div>
+</div>
+</div>
+<!-- Explanation Feedback Box -->
+<div class="p-space-sm bg-emerald-100/60 border border-emerald-700/30 rounded-lg text-emerald-950 flex flex-col gap-space-2xs">
+<div class="flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-emerald-700 text-[18px]">verified</span>
+<span class="font-headline-sm text-headline-sm text-emerald-900">Why this is correct:</span>
+</div>
+<p class="font-body-sm text-body-sm leading-relaxed text-emerald-900">
+              Evaluating <code class="font-mono font-bold bg-white/70 px-1 rounded">F(n) = F(n-1) + F(n-2)</code> generates a binary recursion tree where nodes like <code class="font-mono bg-white/70 px-1 rounded">F(2)</code> are computed thousands of times unless cached.
+            </p>
+</div>
+<!-- Next Button -->
+<button class="w-full py-space-sm px-space-md bg-primary text-on-primary rounded-full border border-primary font-headline-sm text-headline-sm flex items-center justify-center gap-space-xs hover:bg-primary/90 transition-transform shadow-[2px_2px_0px_#000000] active:translate-x-[1px] active:translate-y-[1px]" type="button">
+<span>Next Question (2/3)</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Mini Stats & Knowledge Retention Card -->
+<div class="bg-surface-container-lowest border border-primary rounded-xl p-space-md shadow-[2px_2px_0px_#000000] flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">Session Mastery</span>
+<span class="font-label-md text-label-md bg-secondary-fixed px-2 py-0.5 rounded-full border border-primary text-on-secondary-fixed">88% EXAM READY</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden border border-primary/30">
+<div class="bg-primary h-full rounded-full" style="width: 88%"></div>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs text-center">
+<div class="bg-surface-container-low p-space-xs rounded border border-primary/20">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant block">Cards Practiced</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">14 / 16</span>
+</div>
+<div class="bg-surface-container-low p-space-xs rounded border border-primary/20">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant block">Sprint Streak</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">🔥 5 Days</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</section>
+<!-- Persistent Bottom Follow-Up Bar -->
+<section class="sticky bottom-4 z-40 max-w-[960px] w-[calc(100%-2rem)] mx-auto px-space-xs">
+<form class="w-full bg-surface-container-lowest/95 backdrop-blur-md border border-primary rounded-full p-space-xs pl-space-md shadow-[4px_4px_0px_#000000] flex items-center justify-between gap-space-sm" onsubmit="event.preventDefault();">
+<div class="flex items-center gap-space-xs text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<input class="w-full bg-transparent border-none outline-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/70 py-1" placeholder="Ask Bud a follow-up question or request dynamic flashcards..." type="text"/>
+<div class="flex items-center gap-space-xs shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1 px-space-sm py-1 bg-surface-container text-on-surface border border-primary/20 rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+          Quiz me more
+        </button>
+<button aria-label="Send query" class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center border border-primary hover:scale-105 active:scale-95 transition-transform shadow-[1px_1px_0px_#000000]" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+</form>
+</section>
+</div>
+<script>
+  // Micro-interaction for markdown copying toast
+  const copyBtn = document.getElementById('copyMdBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">done</span><span class="font-label-md text-label-md">Copied!</span>';
+      copyBtn.classList.add('bg-secondary-container');
+      setTimeout(() => {
+        copyBtn.innerHTML = originalText;
+        copyBtn.classList.remove('bg-secondary-container');
+      }, 1800);
+    });
+  }
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-primary mt-space-2xl"><div class="max-w-[1180px] mx-auto px-margin md:px-margin-lg py-space-xl flex flex-col md:flex-row items-center justify-between gap-space-lg text-center md:text-left"><div class="flex flex-col gap-space-2xs"><p class="font-headline-sm text-headline-sm text-primary">AI isn't the problem. Knowing what to ask is.</p><p class="font-body-sm text-body-sm text-on-surface-variant">A maker-centric study companion inspired by grass-roots learning collectives.</p></div><div class="flex items-center gap-space-md text-right"><span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">TinkerHub Movement © 2025 StudyBud. All rights reserved.</span></div></div></footer></body></html>

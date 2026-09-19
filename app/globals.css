@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --canvas: #fafafa; --paper: #ffffff; --ink: #121212; --muted: #5a5a5a; --line: #e5e5e5; --yellow: #ffdf00; --coral: #ff5733; --lime: #22c55e; --lilac: #e0b0ff; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--font-plus-jakarta-sans), sans-serif; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+::selection { background: var(--yellow); color: var(--ink); }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes content-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pop { 50% { transform: translateY(-2px) scale(1.04); } }
+@keyframes soft-pulse { 50% { transform: scale(1.06); } }
+.tactile { transition: transform 180ms ease-out, box-shadow 180ms ease-out, background-color 180ms ease-out, border-color 180ms ease-out, opacity 180ms ease-out; }
+.tactile:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 4px 4px 0 var(--ink); }
+.tactile:active:not(:disabled) { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+.view-enter { animation: content-in 260ms ease-out both; }
+.card-lift { transition: transform 180ms ease-out, box-shadow 180ms ease-out; }
+.card-lift:hover { transform: translateY(-2px); box-shadow: 5px 5px 0 var(--ink); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 1ms !important; } }
+@media (max-width: 390px) { body { min-width: 320px; } }
