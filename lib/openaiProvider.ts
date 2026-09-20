@@ -43,6 +43,27 @@ const learningPlanSchema = {
     } } }
   }
 } as const;
+const combinedCoverageAndPlanSchema = {
+  type: "object", additionalProperties: false, required: ["coverage", "learningPlan"], properties: {
+    coverage: coverageSchema,
+    learningPlan: learningPlanSchema
+  }
+} as const;
+
+function isCoverageContent(value: unknown): value is { topics: CoverageTopic[] } {
+  if (!value || typeof value !== "object" || !Array.isArray((value as { topics?: unknown }).topics) || !(value as { topics: unknown[] }).topics.length) return false;
+  const strings = (items: unknown) => Array.isArray(items) && items.every((item) => typeof item === "string");
+  return (value as { topics: unknown[] }).topics.every((topic) => {
+    const item = topic as Record<string, unknown>;
+    return !!item
+      && typeof item.id === "string" && item.id.trim().length > 0
+      && typeof item.title === "string" && item.title.trim().length > 0
+      && typeof item.summary === "string" && item.summary.trim().length > 0
+      && Array.isArray(item.sourceUnitIds) && item.sourceUnitIds.length > 0 && item.sourceUnitIds.every((id) => typeof id === "string" && id.trim().length > 0)
+      && strings(item.subtopics) && strings(item.importantTerms) && strings(item.contentTypes);
+  });
+}
+
 function learningPlanSchemaFor(expectedTopicIds: string[]) {
   const schema = JSON.parse(JSON.stringify(learningPlanSchema)) as { properties: { topics: { minItems?: number; maxItems?: number; items: { properties: { topicId: { enum?: string[] } } } } } };
   schema.properties.topics.minItems = expectedTopicIds.length;
@@ -175,6 +196,65 @@ function createQuizBlueprint(topics: LearningPlanTopic[], config: QuizConfig) {
 }
 
 export class OpenAIProvider implements AIProvider {
+  private async analyzeCoverageAndLearningPlan(client: OpenAI, request: StudyRequest, model: string): Promise<{ coverage: CoverageAnalysis; learningPlan: LearningPlan }> {
+    const corpus = request.corpus ?? createStudyCorpus(request.sources ?? [request.source]);
+    const batches: typeof corpus.units[] = []; let batch: typeof corpus.units = []; let size = 0;
+    for (const unit of corpus.units) { if (size + unit.text.length > 12000 && batch.length) { batches.push(batch); batch = []; size = 0; } batch.push(unit); size += unit.text.length; } if (batch.length) batches.push(batch);
+    const topics: CoverageTopic[] = []; const plannedTopics: LearningPlanTopic[] = [];
+
+    for (let index = 0; index < batches.length; index += 1) {
+      const sourceUnits = batches[index];
+      const allowedUnitIds = new Set(sourceUnits.map((unit) => unit.id));
+      const input = "Allowed UNIT_ID values (copy them exactly): " + sourceUnits.map((unit) => unit.id).join(", ") + "\n\n" + sourceUnits.map((unit) => "UNIT_ID=" + unit.id + "\nSOURCE=" + unit.sourceName + "\nREFERENCE=" + unit.reference.unitType + " " + unit.reference.unitNumber + "\nTEXT=" + unit.text).join("\n\n");
+      let response;
+      try {
+        response = await client.responses.create({
+          model,
+          store: false,
+          instructions: "You are StudyBud's source-grounded coverage analyst and learning planner. First analyze only the supplied educational source units and build a coverage map of every meaningful topic in this batch. Then, based only on that coverage and those units, create one detailed learning-plan topic for every coverage topic. Coverage topic IDs must be unique within this response. Every returned coverage and learning-plan topic MUST include at least one exact UNIT_ID from the allowed list; never invent IDs, borrow locations, or return empty mappings. Each learningPlan.topicId must exactly match one coverage topic id, and every learning-plan sourceUnitId must belong to that matching coverage topic. Preserve source terminology, organization, relationships, processes, formulas, classifications, examples, visual opportunities, likely mistakes, and revision focus. This is analysis and planning only: do not generate StudySpace blocks, HTML, or CSS.",
+          input,
+          text: { format: { type: "json_schema", name: "coverage_and_learning_plan", strict: true, schema: combinedCoverageAndPlanSchema } }
+        });
+      } catch (error) {
+        const apiError = error as { name?: unknown; message?: unknown; status?: unknown; code?: unknown };
+        debug("combined coverage and learning-plan request failed", { batch: index + 1, name: apiError.name, message: apiError.message, status: apiError.status, code: apiError.code });
+        throw error;
+      }
+      let parsed: unknown;
+      try { parsed = JSON.parse(response.output_text); } catch { throw new Error("OpenAI returned invalid combined coverage and learning-plan structured output."); }
+      const result = parsed as { coverage?: unknown; learningPlan?: unknown };
+      if (!isCoverageContent(result.coverage) || !isLearningPlan(result.learningPlan)) throw new Error("OpenAI returned an invalid combined coverage and learning-plan structure.");
+
+      const coverageByRawId = new Map<string, CoverageTopic>();
+      for (const topic of result.coverage.topics) {
+        if (coverageByRawId.has(topic.id) || topic.sourceUnitIds.some((id) => !allowedUnitIds.has(id))) throw new Error("Coverage analysis returned an invalid or duplicate source mapping.");
+        coverageByRawId.set(topic.id, topic);
+      }
+      if (!coverageByRawId.size) throw new Error("Coverage analysis found no usable source topics.");
+
+      const returnedPlanTopicIds = new Set<string>();
+      if (result.learningPlan.topics.length !== coverageByRawId.size) throw new Error("Learning plan did not return every required coverage topic.");
+      for (const topic of result.learningPlan.topics) {
+        const coverageTopic = coverageByRawId.get(topic.topicId);
+        if (!coverageTopic || returnedPlanTopicIds.has(topic.topicId) || topic.sourceUnitIds.some((id) => !allowedUnitIds.has(id) || !coverageTopic.sourceUnitIds.includes(id))) {
+          throw new Error("Learning plan returned an invalid or duplicate coverage topic ID.");
+        }
+        returnedPlanTopicIds.add(topic.topicId);
+      }
+      if (returnedPlanTopicIds.size !== coverageByRawId.size || Array.from(coverageByRawId.keys()).some((id) => !returnedPlanTopicIds.has(id))) throw new Error("Learning plan did not return every required coverage topic.");
+
+      const idPrefix = "batch" + index + "-";
+      for (const topic of result.coverage.topics) topics.push({ ...topic, id: idPrefix + topic.id });
+      for (const topic of result.learningPlan.topics) plannedTopics.push({ ...topic, topicId: idPrefix + topic.topicId });
+      debug("combined coverage and learning plan validated", { batch: index + 1, status: response.status, coverageTopics: result.coverage.topics.length, learningPlanTopics: result.learningPlan.topics.length });
+    }
+
+    const coveredUnitIds = Array.from(new Set(topics.flatMap((topic) => topic.sourceUnitIds)));
+    if (!topics.length || !plannedTopics.length) throw new Error("Combined coverage and learning plan found no usable topics.");
+    debug("combined coverage and learning plan complete", { sources: corpus.sources.length, units: corpus.units.length, batches: batches.length, coverageTopics: topics.length, learningPlanTopics: plannedTopics.length, coveredUnits: coveredUnitIds.length });
+    return { coverage: { topics, sourceUnitCount: corpus.units.length, coveredUnitIds }, learningPlan: { topics: plannedTopics } };
+  }
+
   private async analyzeCoverage(client: OpenAI, request: StudyRequest, model: string): Promise<CoverageAnalysis> {
     const corpus = request.corpus ?? createStudyCorpus(request.sources ?? [request.source]);
     const batches: typeof corpus.units[] = []; let batch: typeof corpus.units = []; let size = 0;
@@ -268,8 +348,11 @@ export class OpenAIProvider implements AIProvider {
     if (!key) throw new Error("OPENAI_API_KEY is not configured.");
     const corpus = request.corpus ?? createStudyCorpus(request.sources ?? [request.source]);
     const client = new OpenAI({ apiKey: key });
-    const coverage = request.coverage ?? await this.analyzeCoverage(client, { ...request, corpus }, model);
-    const learningPlan = request.learningPlan ?? await this.createLearningPlan(client, corpus, coverage, model);
+    const combinedAnalysis = !request.coverage && !request.learningPlan
+      ? await this.analyzeCoverageAndLearningPlan(client, { ...request, corpus }, model)
+      : undefined;
+    const coverage = request.coverage ?? combinedAnalysis?.coverage ?? await this.analyzeCoverage(client, { ...request, corpus }, model);
+    const learningPlan = request.learningPlan ?? combinedAnalysis?.learningPlan ?? await this.createLearningPlan(client, corpus, coverage, model);
     const source = prepareSourceForGeneration({ ...request, corpus, coverage });
     let response;
     try { response = await client.responses.create({
