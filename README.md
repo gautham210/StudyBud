@@ -1,4 +1,4 @@
-##StudyBud
+# StudyBud
 
 ## Overview
 
