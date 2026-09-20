@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import type { NormalizedStudySource } from "@/lib/documents";
 
-export const IMAGE_MAX_BYTES = 10 * 1024 * 1024;
+export const IMAGE_MAX_BYTES = 4 * 1024 * 1024;
 export const imageMimeTypes = ["image/png", "image/jpeg", "image/webp"] as const;
 export type ImageMimeType = (typeof imageMimeTypes)[number];
 export type ImageAnalysis = { summary: string; visibleText: string; visualElements: string[]; educationalInsights: string[] };
@@ -19,7 +19,7 @@ export function imageMimeType(file: File): ImageMimeType | null {
 export async function toImageUpload(file: File): Promise<ImageUpload> {
   const mimeType = imageMimeType(file);
   if (!mimeType) throw { code: "UNSUPPORTED_IMAGE_TYPE", message: "Use a PNG, JPG, JPEG, or WEBP image." };
-  if (file.size > IMAGE_MAX_BYTES) throw { code: "IMAGE_TOO_LARGE", message: "That image is too large. Max size is 10 MB." };
+  if (file.size > IMAGE_MAX_BYTES) throw { code: "IMAGE_TOO_LARGE", message: "File is too large. Please upload a file under 4 MB." };
   const base64 = Buffer.from(await file.arrayBuffer()).toString("base64");
   return { fileName: file.name, mimeType, sizeBytes: file.size, dataUrl: "data:" + mimeType + ";base64," + base64 };
 }

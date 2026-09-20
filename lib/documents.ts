@@ -5,7 +5,7 @@ import { XMLParser } from "fast-xml-parser";
 import * as XLSX from "xlsx";
 import { randomUUID } from "crypto";
 
-export const DOCUMENT_MAX_BYTES = 25 * 1024 * 1024;
+export const DOCUMENT_MAX_BYTES = 4 * 1024 * 1024;
 export type DocumentErrorCode = "INVALID_FILE" | "FILE_TOO_LARGE" | "UNSUPPORTED_FILE_TYPE" | "EXTRACTION_FAILED" | "EMPTY_DOCUMENT" | "SERVER_ERROR";
 export type DocumentError = { code: DocumentErrorCode; message: string };
 export type ContentUnit = { number: number; text: string; title?: string };
@@ -22,7 +22,7 @@ function complete(file: File, text: string, units: Partial<NormalizedStudySource
 }
 export async function ingestDocument(file: File): Promise<NormalizedStudySource> {
   if (!file || !file.name) throw { code: "INVALID_FILE", message: "Choose a document to process." } satisfies DocumentError;
-  if (file.size > DOCUMENT_MAX_BYTES) throw { code: "FILE_TOO_LARGE", message: "That file is too large. Max size is 25 MB." } satisfies DocumentError;
+  if (file.size > DOCUMENT_MAX_BYTES) throw { code: "FILE_TOO_LARGE", message: "File is too large. Please upload a file under 4 MB." } satisfies DocumentError;
   const extension = extensionOf(file.name); if (["doc", "ppt", "xls"].includes(extension)) throw { code: "UNSUPPORTED_FILE_TYPE", message: "Legacy Office formats are not supported yet. Please use DOCX, PPTX, or XLSX." } satisfies DocumentError;
   if (!documentKind(file.name)) throw { code: "UNSUPPORTED_FILE_TYPE", message: "This document type is not supported yet." } satisfies DocumentError;
   const buffer = Buffer.from(await file.arrayBuffer());

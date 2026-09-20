@@ -3,6 +3,7 @@ import { createStudyCorpus, selectCorpusContext } from "@/lib/corpus";
 import type { NormalizedStudySource } from "@/lib/documents";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 type AskBody = { question?: string; sources?: NormalizedStudySource[]; studyTitle?: string; history?: Array<{ role: "user" | "assistant"; content: string }> };
 export async function POST(request: Request) {
   try {

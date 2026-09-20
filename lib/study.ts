@@ -13,8 +13,8 @@ export type StudySource = {
   processedDocument?: NormalizedStudySource;
 };
 
-export const MAX_SOURCE_FILE_SIZE = 25 * 1024 * 1024;
-export const MAX_IMAGE_SOURCE_FILE_SIZE = 10 * 1024 * 1024;
+export const MAX_SOURCE_FILE_SIZE = 4 * 1024 * 1024;
+export const MAX_IMAGE_SOURCE_FILE_SIZE = 4 * 1024 * 1024;
 const documentExtensions: Record<string, string> = { pdf: "PDF", doc: "Word", docx: "Word", ppt: "PowerPoint", pptx: "PowerPoint", xls: "Excel", xlsx: "Excel", csv: "CSV", txt: "Text", md: "Markdown" };
 const imageExtensions = ["jpg", "jpeg", "png", "webp"];
 

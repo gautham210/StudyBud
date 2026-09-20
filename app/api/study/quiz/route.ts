@@ -2,6 +2,7 @@ import type { QuizConfig, QuizQuestionType, QuizRequest, StudySpace } from "@/li
 import { OpenAIProvider } from "@/lib/openaiProvider";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 
 const questionTypes: QuizQuestionType[] = ["multiple_choice", "true_false", "short_answer", "scenario"];
 

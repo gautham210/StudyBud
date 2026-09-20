@@ -3,6 +3,7 @@ import { MockAIProvider } from "@/lib/mockAIProvider";
 import { OpenAIProvider } from "@/lib/openaiProvider";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 
 function validRequest(value: unknown): value is StudyRequest {
   if (!value || typeof value !== "object") return false;
